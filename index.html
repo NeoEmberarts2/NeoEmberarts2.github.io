@@ -157,7 +157,19 @@
             </block>
           </value>
         </block>
-        <block type="send_embed"></block>
+        <block type="send_embed">
+          <field name="NAME">0</field>
+          <value name="Title">
+            <block type="string">
+              <field name="String">Title</field>
+            </block>
+          </value>
+          <value name="Descriptioon">
+            <block type="string">
+              <field name="String">Description</field>
+            </block>
+          </value>
+        </block>
       </category>
       <category name="Data" colour="#995ba5">
         <block type="string">
@@ -167,7 +179,7 @@
           <field name="NAME">.replaceAll(prefix,"")</field>
         </block>
         <block type="get_user">
-          <field name="NAME">msg.authhor</field>
+          <field name="NAME">msg.author</field>
         </block>
         <block type="prefix"></block>
       </category>
@@ -245,6 +257,15 @@
         //Download
         var code2 = "";
         code2 = code.replace(";",";\n");
+        if (code2.indexOf("values.push(") > -1) {
+         for (var i = 0; i < mapIDs.length; i++) {
+           code2 = "var " +  mapIDs[i] + "keys = [\"empty\"];\n" + code2;
+           code2 = "var " +  mapIDs[i] + "values = [\"empty\"];\n" + code2;
+         }
+        }
+        
+        
+        
         code2 = code2.replace("{","{\n");
         document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code2.replace(";",";\n");
 
@@ -254,22 +275,6 @@
 
 
       }
-
-
-      //no longer needed
-      function runCode() {
-        // Generate JavaScript code and run it.
-        window.LoopTrap = 1000;
-        Blockly.JavaScript.INFINITE_LOOP_TRAP =
-          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-        var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-        try {
-          document.getElementById("Codeded").innerHTML = "const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n" + code;
-        } catch (e) {
-          alert(e);
-        }
-      }
     </script>
 
 
@@ -277,10 +282,10 @@
 
 
     <script>
-var temp = "";
-var temp2 = "";
-var hasmaps = false;
-var mapIDs = [];
+      var temp = "";
+      var temp2 = "";
+      var hasmaps = false;
+      var mapIDs = [];
       Blockly.Blocks['on_message'] = {
         init: function() {
           this.appendDummyInput()
@@ -400,7 +405,7 @@ var mapIDs = [];
         init: function() {
           this.appendDummyInput()
             .appendField("Get User")
-            .appendField(new Blockly.FieldDropdown([["ID","msg.authhor"], ["Name","msg.author.username"]]), "NAME");
+            .appendField(new Blockly.FieldDropdown([["ID","msg.author"], ["Name","msg.author.username"]]), "NAME");
           this.setOutput(true, null);
           this.setColour(290);
           this.setTooltip("Gets users details");
@@ -664,17 +669,16 @@ var mapIDs = [];
         var value_key = Blockly.JavaScript.valueToCode(block, 'Key', Blockly.JavaScript.ORDER_ATOMIC);
         var value_value = Blockly.JavaScript.valueToCode(block, 'Value', Blockly.JavaScript.ORDER_ATOMIC);
         // TODO: Assemble JavaScript into code variable.
-        code = "indexVal = " + text_id + "keys.indexOf(" + value_key + ");\nif (indexVal == -1) {\n" + text_id + "keys.push(" + value_key + ");\n" + text_id + "values.push(" + value_value + ");\n} else {\n" + text_id + "values[indexVal] = " + value_value + ";\n}"
+        code = "indexVal = " + text_id + "keys.indexOf(" + value_key + ");\nif (indexVal == -1) {\n" + text_id + "keys.push(" + value_key + ");\n" + text_id + "values.push(" + value_value + ");\n} else {\n" + text_id + "values[indexVal] = " + value_value + ";\n}\n"
         hasmaps = true;
-        var index = -1;
-        if (index = -1) {
-          maps.push(text_id);
+        if (mapIDs.indexOf(text_id) == -1) {
+          mapIDs.push(text_id);
         }
-        
+
         return code;
       };
-      
-      
+
+
       Blockly.JavaScript['send_embed'] = function(block) {
         var value_title = Blockly.JavaScript.valueToCode(block, 'Title', Blockly.JavaScript.ORDER_ATOMIC);
         var value_descriptioon = Blockly.JavaScript.valueToCode(block, 'Descriptioon', Blockly.JavaScript.ORDER_ATOMIC);
