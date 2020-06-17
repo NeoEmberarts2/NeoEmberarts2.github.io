@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Blockly Demo: Generating JavaScript</title>
+    <title>DragABot.js</title>
 
     <script src="https://codepen.io/therandomcrafter83/pen/jOWNGmN.js"></script>
     <script src="https://codepen.io/neoemberarts2/pen/NWxKPqX.js"></script>
@@ -103,35 +103,97 @@
     </p>
 
     <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    
+    
+    
+    <!--Categories-->
 
     <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-      <category name="Events" colour="230">
+      <category name="Logic" colour="#5ba58c">
+        <block type="if">
+          <field name="compare">=</field>
+          <value name="statement1">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+          <value name="statement2">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Events" colour="#5b67a5">
         <block type="on_message"></block>
-        <block type="if_message_equals"></block>
+        <block type="if_message_equals">
+          <field name="NAME">===</field>
+          <value name="Value">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
         <block type="if_prefix_equals"></block>
       </category>
-      <category name="Settings" colour="20">
-        <block type="ignore__bots"></block>
-        <block type="set_prefix"></block>
+      <category name="Settings" colour="#a5745b">
+        <block type="ignore__bots">
+          <field name="NAME">if(msg.author.bot) return;</field>
+        </block>
+        <block type="set_prefix">
+          <value name="prefix">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
       </category>
-      <category name="Actions" colour="120">
-        <block type="send_message"></block>
+      <category name="Actions" colour="#5ba55b">
+        <block type="send_message">
+          <field name="NAME">msg.channel.send(</field>
+          <value name="NAME">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
       </category>
-      <category name="Data" colour="290">
-        <block type="string"></block>
-        <block type="message"></block>
-        <block type="get_user"></block>
+      <category name="Data" colour="#995ba5">
+        <block type="string">
+          <field name="String">String</field>
+        </block>
+        <block type="message">
+          <field name="NAME">.replaceAll(prefix,"")</field>
+        </block>
+        <block type="get_user">
+          <field name="NAME">msg.authhor</field>
+        </block>
         <block type="prefix"></block>
       </category>
-      <category name="Variables" colour="330">
-        <block type="variables"></block>
-        <block type="get_var_data"></block>
+      <category name="Variables" colour="#a55b80">
+        <block type="variables">
+          <field name="varName">var</field>
+          <value name="data">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="get_var_data">
+          <field name="varName">var</field>
+        </block>
       </category>
-      <category name="Client data" colour="65">
-        <block type="client_login"></block>
+      <sep></sep>
+      <category name="Client data" colour="#9fa55b">
+        <block type="client_login">
+          <field name="Token">Paste token here</field>
+        </block>
       </category>
     </xml>
 
+    
+    
+    <!--Starter code-->
 
     <div class="tooltip">
     <a onClick="this.setSelectionRange(0, this.value.length)" id="CodeText" class="CodeVeiw">Please click "show code" to see or download your code</a>
@@ -199,9 +261,9 @@
           this.appendDummyInput()
             .appendField("On new message");
           this.appendStatementInput("events")
-            .setCheck(["Boolean", "Number", "String", "Array"]);
+            .setCheck(["Boolean", "Number", "String", "Array", "Block-type2"]);
           this.setPreviousStatement(true, "Other");
-          this.setNextStatement(true, "Other");
+          this.setNextStatement(true, ["final", "Other"]);
           this.setColour(230);
           this.setTooltip("This activates every time a message is sent in any server");
           this.setHelpUrl("");
@@ -212,12 +274,12 @@
         init: function() {
           this.appendDummyInput()
             .appendField("Send")
-            .appendField(new Blockly.FieldDropdown([["Message","msg.channel.send"], ["Reply","msg.reply"]]), "NAME");
+            .appendField(new Blockly.FieldDropdown([["Message","msg.channel.send("], ["Reply","msg.reply("]]), "NAME");
           this.appendValueInput("NAME")
             .setCheck("String");
           this.setInputsInline(true);
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array"]);
           this.setColour(120);
           this.setTooltip("Sends either a message or reply. Must be in an event to be called correctly");
           this.setHelpUrl("");
@@ -229,8 +291,8 @@
           this.appendDummyInput()
             .appendField("Ignore bots")
             .appendField(new Blockly.FieldDropdown([["true","if(msg.author.bot) return;"], ["false",""]]), "NAME");
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array"]);
           this.setColour(20);
           this.setTooltip("Choose whether your bot ignores other bots including itself");
           this.setHelpUrl("");
@@ -241,7 +303,7 @@
         init: function() {
           this.appendDummyInput()
             .appendField("Get message text")
-            .appendField(new Blockly.FieldDropdown([["Without prefix",".replaceAll(prefix,\"\")"], ["With prefix","/*With prefix*/"]]), "NAME");
+            .appendField(new Blockly.FieldDropdown([["Without prefix",".replaceAll(prefix,\"\")"], ["With prefix","OPTIONNAME"]]), "NAME");
           this.setInputsInline(false);
           this.setOutput(true, null);
           this.setColour(290);
@@ -269,7 +331,7 @@
             .setCheck("String");
           this.setInputsInline(true);
           this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array", "Other"]);
           this.setColour(20);
           this.setTooltip("Sets the prefix for your bot");
           this.setHelpUrl("");
@@ -283,8 +345,8 @@
           this.appendStatementInput("code_inside")
             .setCheck(["Number", "Boolean", "String", "Array"]);
           this.setInputsInline(true);
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
           this.setColour(230);
           this.setTooltip("");
           this.setHelpUrl("");
@@ -301,8 +363,8 @@
             .appendField("Then");
           this.appendStatementInput("code_inside")
             .setCheck(["Number", "Boolean", "String", "Array"]);
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
           this.setColour(230);
           this.setTooltip("if message contains a string the the code inside will be executed");
           this.setHelpUrl("");
@@ -313,7 +375,7 @@
         init: function() {
           this.appendDummyInput()
             .appendField("Get User")
-            .appendField(new Blockly.FieldDropdown([["ID","msg.author"], ["Name","msg.author.username"]]), "NAME");
+            .appendField(new Blockly.FieldDropdown([["ID","msg.authhor"], ["Name","msg.author.username"]]), "NAME");
           this.setOutput(true, null);
           this.setColour(290);
           this.setTooltip("Gets users details");
@@ -330,8 +392,8 @@
           this.appendValueInput("data")
             .setCheck(null);
           this.setInputsInline(true);
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array"]);
           this.setColour(330);
           this.setTooltip("Creates a variable that is stored for the lifetime of the bot");
           this.setHelpUrl("");
@@ -374,10 +436,24 @@
         }
       };
 
-
-
-
-
+      Blockly.Blocks['if'] = {
+        init: function() {
+          this.appendValueInput("statement1")
+            .setCheck(null)
+            .appendField("If");
+          this.appendValueInput("statement2")
+            .setCheck(null)
+            .appendField(new Blockly.FieldDropdown([["Equals","="], ["Does not equal","!"], ["Contains","."]]), "compare");
+          this.appendStatementInput("codeinside")
+            .setCheck(["Boolean", "Number", "String", "Array"]);
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array"]);
+          this.setNextStatement(true, ["Boolean", "Number", "String", "Array"]);
+          this.setColour(195);
+          this.setTooltip("A simple if statement");
+          this.setHelpUrl("");
+        }
+      };
 
 
 
