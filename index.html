@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Blockly Demo: Generating JavaScript</title>
+
+    <script src="https://codepen.io/therandomcrafter83/pen/jOWNGmN.js"></script>
+    <script src="https://codepen.io/neoemberarts2/pen/NWxKPqX.js"></script>
+    <script src="https://codepen.io/neoemberarts2/pen/PoZYwqm.js"></script>
+    <script src="https://codepen.io/neoemberarts2/pen/mdVbyVR.js"></script>
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>      
+  </head>
+  <body>
+    <!--Button and code styles-->
+    <style>
+      /*Tooltip Setup*/
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+      }
+    /*Compiler button*/
+      .button4 {
+        box-shadow: 0px 10px 14px -7px #276873;
+        background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+        background-color:#599bb3;
+        border-radius:8px;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:13px;
+        font-weight:bold;
+        padding:13px 32px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #3d768a;
+      }
+      .button4:hover {
+        background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+        background-color:#408c99;
+      }
+      .button4:active {
+        position:relative;
+        top:1px;
+      }
+/*Code Veiwer*/
+      .CodeVeiw {
+        box-shadow:inset 0px 1px 0px 0px #ffffff;
+        background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+        background-color:#f9f9f9;
+        border-radius:6px;
+        border:1px solid #dcdcdc;
+        display:inline-block;
+        cursor:pointer;
+        color:#666666;
+        font-family:Arial;
+        font-size:15px;
+        font-weight:bold;
+        padding:6px 24px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #ffffff;
+      }
+      .CodeVeiw:hover {
+        background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+        background-color:#e9e9e9;
+      }
+      .CodeVeiw:active {
+        position:relative;
+        top:1px;
+      }
+
+      
+    </style>
+    <p>
+      <button class="button4" onclick="showCode();">Show Code</button>
+    </p>
+
+    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+      <category name="Events" colour="230">
+        <block type="on_message"></block>
+        <block type="if_message_equals"></block>
+        <block type="if_prefix_equals"></block>
+      </category>
+      <category name="Settings" colour="20">
+        <block type="ignore__bots"></block>
+        <block type="set_prefix"></block>
+      </category>
+      <category name="Actions" colour="120">
+        <block type="send_message"></block>
+      </category>
+      <category name="Data" colour="290">
+        <block type="string"></block>
+        <block type="message"></block>
+        <block type="get_user"></block>
+        <block type="prefix"></block>
+      </category>
+      <category name="Variables" colour="330">
+        <block type="variables"></block>
+        <block type="get_var_data"></block>
+      </category>
+      <category name="Client data" colour="65">
+        <block type="client_login"></block>
+      </category>
+    </xml>
+
+
+    <div class="tooltip">
+    <a onClick="this.setSelectionRange(0, this.value.length)" id="CodeText" class="CodeVeiw">Please click "show code" to see or download your code</a>
+      
+      <span class="tooltiptext">Click the code to download it</span>
+    </div>
+    
+    
+    <script>
+      function download(text, name, type) {
+        var a = document.getElementById("CodeText");
+        var file = new Blob([text], {type: type});
+        a.href = URL.createObjectURL(file);
+        a.download = name;
+      }
+      
+      
+      var demoWorkspace = Blockly.inject('blocklyDiv',
+                                         {media: '../../media/',
+                                          toolbox: document.getElementById('toolbox')});
+      Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                                 demoWorkspace);
+
+      function showCode() {
+
+        // Generate JavaScript code and display it.
+        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        //Download
+        code = code.replace(";",";\n");
+        code = code.replace("{","{\n");
+        document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code.replace(";",";/n");
+      
+
+        download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n"+code, 'BotCode.txt', 'text/plain');
+      
+      
+      
+      }
+      
+      
+      //no longer needed
+      function runCode() {
+        // Generate JavaScript code and run it.
+        window.LoopTrap = 1000;
+        Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+        var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        try {
+          document.getElementById("Codeded").innerHTML = "const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n" + code;
+        } catch (e) {
+          alert(e);
+        }
+      }
+    </script>
+
+
+
+
+
+    <script>
+      Blockly.Blocks['on_message'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("On new message");
+          this.appendStatementInput("events")
+            .setCheck(["Boolean", "Number", "String", "Array"]);
+          this.setPreviousStatement(true, "Other");
+          this.setNextStatement(true, "Other");
+          this.setColour(230);
+          this.setTooltip("This activates every time a message is sent in any server");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['send_message'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Send")
+            .appendField(new Blockly.FieldDropdown([["Message","msg.channel.send"], ["Reply","msg.reply"]]), "NAME");
+          this.appendValueInput("NAME")
+            .setCheck("String");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(120);
+          this.setTooltip("Sends either a message or reply. Must be in an event to be called correctly");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['ignore__bots'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Ignore bots")
+            .appendField(new Blockly.FieldDropdown([["true","if(msg.author.bot) return;"], ["false",""]]), "NAME");
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(20);
+          this.setTooltip("Choose whether your bot ignores other bots including itself");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['message'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Get message text")
+            .appendField(new Blockly.FieldDropdown([["Without prefix",".replaceAll(prefix,\"\")"], ["With prefix","/*With prefix*/"]]), "NAME");
+          this.setInputsInline(false);
+          this.setOutput(true, null);
+          this.setColour(290);
+          this.setTooltip("Gets the latest message");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['string'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("String"), "String");
+          this.setOutput(true, null);
+          this.setColour(290);
+          this.setTooltip("Input text");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['set_prefix'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Set prefix to");
+          this.appendValueInput("prefix")
+            .setCheck("String");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(20);
+          this.setTooltip("Sets the prefix for your bot");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['if_prefix_equals'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("if message contains prefix");
+          this.appendStatementInput("code_inside")
+            .setCheck(["Number", "Boolean", "String", "Array"]);
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(230);
+          this.setTooltip("");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['if_message_equals'] = {
+        init: function() {
+          this.appendValueInput("Value")
+            .setCheck("String")
+            .appendField("if message")
+            .appendField(new Blockly.FieldDropdown([["Equals","==="], ["Contains","contains"]]), "NAME");
+          this.appendDummyInput()
+            .appendField("Then");
+          this.appendStatementInput("code_inside")
+            .setCheck(["Number", "Boolean", "String", "Array"]);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(230);
+          this.setTooltip("if message contains a string the the code inside will be executed");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['get_user'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Get User")
+            .appendField(new Blockly.FieldDropdown([["ID","msg.author"], ["Name","msg.author.username"]]), "NAME");
+          this.setOutput(true, null);
+          this.setColour(290);
+          this.setTooltip("Gets users details");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['variables'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("variable")
+            .appendField(new Blockly.FieldTextInput("var"), "varName")
+            .appendField("=");
+          this.appendValueInput("data")
+            .setCheck(null);
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(330);
+          this.setTooltip("Creates a variable that is stored for the lifetime of the bot");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['get_var_data'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("get data from variable")
+            .appendField(new Blockly.FieldTextInput("var"), "varName");
+          this.setOutput(true, null);
+          this.setColour(330);
+          this.setTooltip("gets the data that was stored inside a variable");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['prefix'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Get prefix");
+          this.setInputsInline(true);
+          this.setOutput(true, null);
+          this.setColour(290);
+          this.setTooltip("Gets the current prefix");
+          this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Blocks['client_login'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Set bot token to")
+            .appendField(new Blockly.FieldTextInput("Paste token here"), "Token");
+          this.setPreviousStatement(true, "final");
+          this.setColour(65);
+          this.setTooltip("This should be the very last thing thats ever called");
+          this.setHelpUrl("");
+        }
+      };
+
+
+
+
+
+
+
+
+
+
+      Blockly.JavaScript['on_message'] = function(block) {
+        var statements_events = Blockly.JavaScript.statementToCode(block, 'events');
+        // TODO: Assemble JavaScript into code variable.
+        var code = "client.on(\"message\", function(msg){" + statements_events + "});";
+        return code;
+      };
+
+      Blockly.JavaScript['send_message'] = function(block) {
+        var dropdown_name = block.getFieldValue('NAME');
+        var value_name = Blockly.JavaScript.valueToCode(block, 'NAME', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        var code = dropdown_name + value_name + 
+            ";";
+        return code;
+      };
+
+      Blockly.JavaScript['ignore__bots'] = function(block) {
+        var dropdown_name = block.getFieldValue('NAME');
+        // TODO: Assemble JavaScript into code variable.
+        var code = dropdown_name;
+        return code;
+      };
+
+      Blockly.JavaScript['message'] = function(block) {
+        var dropdown_name = block.getFieldValue('NAME');
+        // TODO: Assemble JavaScript into code variable.
+        var code = "msg.content" + dropdown_name
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['string'] = function(block) {
+        var text_string = block.getFieldValue('String');
+        // TODO: Assemble JavaScript into code variable.
+        var code = "\"" + text_string + "\"";
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['set_prefix'] = function(block) {
+        var value_prefix = Blockly.JavaScript.valueToCode(block, 'prefix', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        var code = "prefix = " + value_prefix + ";";
+        return code;
+      };
+
+      Blockly.JavaScript['if_prefix_equals'] = function(block) {
+        var statements_code_inside = Blockly.JavaScript.statementToCode(block, 'code_inside');
+        // TODO: Assemble JavaScript into code variable.
+        var code = "if(msg.content.startsWith(prefix)){" + statements_code_inside + "}"
+        return code;
+      };
+
+      Blockly.JavaScript['if_message_equals'] = function(block) {
+        var dropdown_name = block.getFieldValue('NAME');
+        var value_value = Blockly.JavaScript.valueToCode(block, 'Value', Blockly.JavaScript.ORDER_ATOMIC);
+        var statements_code_inside = Blockly.JavaScript.statementToCode(block, 'code_inside');
+        // TODO: Assemble JavaScript into code variable.
+        if (dropdown_name == "===") {
+          var code = "if (msg.content.toLowerCase() == " + value_value + ") {" + statements_code_inside + "}";
+        } else if (dropdown_name == "contains") {
+          var code = "if (msg.content.includes(" + value_value + ")) {" + statements_code_inside + "}";
+        }
+        return code;
+      };
+
+      Blockly.JavaScript['get_user'] = function(block) {
+        var dropdown_name = block.getFieldValue('NAME');
+        // TODO: Assemble JavaScript into code variable.
+        var code = dropdown_name;
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['variables'] = function(block) {
+        var text_varname = block.getFieldValue('varName');
+        var value_data = Blockly.JavaScript.valueToCode(block, 'data', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        var code = "var " + text_varname + " = " + value_data + ";"
+        return code;
+      };
+
+      Blockly.JavaScript['get_var_data'] = function(block) {
+        var text_varname = block.getFieldValue('varName');
+        // TODO: Assemble JavaScript into code variable.
+        var code = text_varname
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['prefix'] = function(block) {
+        // TODO: Assemble JavaScript into code variable.
+        var code = "prefix"
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['client_login'] = function(block) {
+        var text_token = block.getFieldValue('Token');
+        // TODO: Assemble JavaScript into code variable.
+        var code = "client.login(\"" + text_token + "\");"
+        return code;
+      };
+    </script>
+
+  </body>
+</html>
