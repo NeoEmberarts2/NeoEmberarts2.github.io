@@ -1,4 +1,4 @@
-If you want to assist in the development of this web app, please join the discord support server
+If you want to assist in the development of this website, please join the discord support server
 https://discord.gg/kERrndv
 
 
