@@ -46,7 +46,7 @@
       .tooltip:hover .tooltiptext {
         visibility: visible;
       }
-    /*Compiler button*/
+      /*Compiler button*/
       .button4 {
         box-shadow: 0px 10px 14px -7px #276873;
         background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
@@ -70,7 +70,7 @@
         position:relative;
         top:1px;
       }
-/*Code Veiwer*/
+      /*Code Veiwer*/
       .CodeVeiw {
         box-shadow:inset 0px 1px 0px 0px #ffffff;
         background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
@@ -96,16 +96,16 @@
         top:1px;
       }
 
-      
+
     </style>
     <p>
       <button class="button4" onclick="showCode();">Show Code</button>
     </p>
 
     <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
-    
-    
-    
+
+
+
     <!--Categories-->
 
     <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
@@ -191,17 +191,17 @@
       </category>
     </xml>
 
-    
-    
+
+
     <!--Starter code-->
 
     <div class="tooltip">
-    <a onClick="this.setSelectionRange(0, this.value.length)" id="CodeText" class="CodeVeiw">Please click "show code" to see or download your code</a>
-      
+      <a onClick="this.setSelectionRange(0, this.value.length)" id="CodeText" class="CodeVeiw">Please click "show code" to see or download your code</a>
+
       <span class="tooltiptext">Click the code to download it</span>
     </div>
-    
-    
+
+
     <script>
       function download(text, name, type) {
         var a = document.getElementById("CodeText");
@@ -209,8 +209,8 @@
         a.href = URL.createObjectURL(file);
         a.download = name;
       }
-      
-      
+
+
       var demoWorkspace = Blockly.inject('blocklyDiv',
                                          {media: '../../media/',
                                           toolbox: document.getElementById('toolbox')});
@@ -223,18 +223,19 @@
         Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
         var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
         //Download
-        code = code.replace(";",";\n");
-        code = code.replace("{","{\n");
-        document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code.replace(";",";/n");
-      
+        var code2 = "";
+        code2 = code.replace(";",";\n");
+        code2 = code2.replace("{","{\n");
+        document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code2.replace(";",";\n");
 
-        download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n"+code, 'BotCode.txt', 'text/plain');
-      
-      
-      
+
+        download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n"+code2, 'BotCode.txt', 'text/plain');
+
+
+
       }
-      
-      
+
+
       //no longer needed
       function runCode() {
         // Generate JavaScript code and run it.
@@ -495,7 +496,7 @@
         // TODO: Assemble JavaScript into code variable.
         var code = "\"" + text_string + "\"";
         // TODO: Change ORDER_NONE to the correct strength.
-        return [code, Blockly.JavaScript.ORDER_NONE];
+        return [code.toLowerCase(), Blockly.JavaScript.ORDER_NONE];
       };
 
       Blockly.JavaScript['set_prefix'] = function(block) {
@@ -560,6 +561,25 @@
         var text_token = block.getFieldValue('Token');
         // TODO: Assemble JavaScript into code variable.
         var code = "client.login(\"" + text_token + "\");"
+        return code;
+      };
+
+
+      Blockly.JavaScript['if'] = function(block) {
+        var value_statement1 = Blockly.JavaScript.valueToCode(block, 'statement1', Blockly.JavaScript.ORDER_ATOMIC);
+        var dropdown_compare = block.getFieldValue('compare');
+        var value_statement2 = Blockly.JavaScript.valueToCode(block, 'statement2', Blockly.JavaScript.ORDER_ATOMIC);
+        var statements_codeinside = Blockly.JavaScript.statementToCode(block, 'codeinside');
+        // TODO: Assemble JavaScript into code variable.
+        if (dropdown_compare == "=") {
+          code = "if (" + value_statement1 + " == " + value_statement2 + ") {" + statements_codeinside + "}";
+        }
+        if (dropdown_compare == "!") {
+          code = "if (" + value_statement1 + " !== " + value_statement2 + ") {" + statements_codeinside + "}";
+        }
+        if (dropdown_compare == ".") {
+          code = "if (" + value_statement1 + ".includes(" + value_statement2 + ")) {" + statements_codeinside + "}";
+        }
         return code;
       };
     </script>
