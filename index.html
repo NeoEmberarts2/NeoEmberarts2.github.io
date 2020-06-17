@@ -157,6 +157,7 @@
             </block>
           </value>
         </block>
+        <block type="send_embed"></block>
       </category>
       <category name="Data" colour="#995ba5">
         <block type="string">
@@ -182,6 +183,25 @@
         <block type="get_var_data">
           <field name="varName">var</field>
         </block>
+
+
+        <block type="map_data">
+          <field name="id">MapID</field>
+          <value name="Key">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+          <value name="Value">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+
+
+
+
       </category>
       <sep></sep>
       <category name="Client data" colour="#9fa55b">
@@ -257,7 +277,10 @@
 
 
     <script>
-
+var temp = "";
+var temp2 = "";
+var hasmaps = false;
+var mapIDs = [];
       Blockly.Blocks['on_message'] = {
         init: function() {
           this.appendDummyInput()
@@ -458,6 +481,57 @@
       };
 
 
+      Blockly.Blocks['send_embed'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Create Embed | Title");
+          this.appendValueInput("Title")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT);
+          this.appendValueInput("Descriptioon")
+            .setCheck(null)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("Description");
+          this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField("Color")
+            .appendField(new Blockly.FieldDropdown([["Black","0"], ["darker grey","2830390"], ["Brighter grey","7569011"], ["White","16777214"], ["Sky blue","7587007"], ["Light Blue","34302"], ["light bluish green","65534"], ["Medium spring green","65426"], ["grass green","52480"], ["update green","2604342"], ["Light pink","16752639"], ["Hot pink","16711935"], ["Purple","10223871"], ["Yellow","16776960"], ["Orange","16776960"], ["Bright red", "16711680" ], ["Dark red", "10485760"]]), "NAME");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(120);
+          this.setTooltip("");
+          this.setHelpUrl("");
+        }
+      };
+
+
+      Blockly.Blocks['map_data'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Map Data")
+            .appendField(new Blockly.FieldTextInput("MapID"), "id");
+          this.appendValueInput("Key")
+            .setCheck(null)
+            .appendField("Set Key");
+          this.appendValueInput("Value")
+            .setCheck(null)
+            .appendField("With Value");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(330);
+          this.setTooltip("Usefull for an economy bot. PRO TIP: use the key as a users ID, and the value will be the coins, then when you get the value. BOOM, the coin value was stored for that user");
+          this.setHelpUrl("");
+        }
+      };
+
+
+
+
+
+
+
 
 
 
@@ -583,6 +657,37 @@
         }
         return code;
       };
+
+
+      Blockly.JavaScript['map_data'] = function(block) {
+        var text_id = block.getFieldValue('id');
+        var value_key = Blockly.JavaScript.valueToCode(block, 'Key', Blockly.JavaScript.ORDER_ATOMIC);
+        var value_value = Blockly.JavaScript.valueToCode(block, 'Value', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        code = "indexVal = " + text_id + "keys.indexOf(" + value_key + ");\nif (indexVal == -1) {\n" + text_id + "keys.push(" + value_key + ");\n" + text_id + "values.push(" + value_value + ");\n} else {\n" + text_id + "values[indexVal] = " + value_value + ";\n}"
+        hasmaps = true;
+        var index = -1;
+        if (index = -1) {
+          maps.push(text_id);
+        }
+        
+        return code;
+      };
+      
+      
+      Blockly.JavaScript['send_embed'] = function(block) {
+        var value_title = Blockly.JavaScript.valueToCode(block, 'Title', Blockly.JavaScript.ORDER_ATOMIC);
+        var value_descriptioon = Blockly.JavaScript.valueToCode(block, 'Descriptioon', Blockly.JavaScript.ORDER_ATOMIC);
+        var dropdown_name = block.getFieldValue('NAME');
+        var temptitle = value_title.replace("(","");
+        temptitle = temptitle.replace(")","");
+        var tempdesc = value_descriptioon.replace("(","");
+        tempdesc = tempdesc.replace(")","");
+
+        var code = "msg.channel.send({embed: {title: " + temptitle + ", description: " + tempdesc + ", color: " + dropdown_name + "}});";
+        return code;
+      };
+
     </script>
 
   </body>
