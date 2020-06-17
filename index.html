@@ -123,9 +123,7 @@
             </block>
           </value>
         </block>
-      </category>
-      <category name="Events" colour="#5b67a5">
-        <block type="on_message"></block>
+        <block type="if_prefix_equals"></block>
         <block type="if_message_equals">
           <field name="NAME">===</field>
           <value name="Value">
@@ -134,7 +132,9 @@
             </block>
           </value>
         </block>
-        <block type="if_prefix_equals"></block>
+      </category>
+      <category name="Events" colour="#5b67a5">
+        <block type="on_message"></block>
       </category>
       <category name="Settings" colour="#a5745b">
         <block type="ignore__bots">
@@ -257,6 +257,7 @@
 
 
     <script>
+
       Blockly.Blocks['on_message'] = {
         init: function() {
           this.appendDummyInput()
@@ -348,7 +349,7 @@
           this.setInputsInline(true);
           this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
           this.setNextStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
-          this.setColour(230);
+          this.setColour(195);
           this.setTooltip("");
           this.setHelpUrl("");
         }
@@ -366,7 +367,7 @@
             .setCheck(["Number", "Boolean", "String", "Array"]);
           this.setPreviousStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
           this.setNextStatement(true, ["Boolean", "Number", "String", "Array", "Block-type2"]);
-          this.setColour(230);
+          this.setColour(195);
           this.setTooltip("if message contains a string the the code inside will be executed");
           this.setHelpUrl("");
         }
