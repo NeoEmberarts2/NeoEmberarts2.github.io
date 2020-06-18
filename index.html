@@ -210,7 +210,14 @@
             </block>
           </value>
         </block>
-
+        <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213">
+          <field name="id">MapID</field>
+          <value name="Key">
+            <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
+              <field name="String">Key</field>
+            </block>
+          </value>
+        </block>
 
 
 
@@ -258,6 +265,7 @@
         var code2 = "";
         code2 = code.replace(";",";\n");
         if (code2.indexOf("values.push(") > -1) {
+          code2 = "var index3 = \"\";\nfunction getMapData(id, key) {\n    index3 = window[id + \"keys\"].indexOf(key);\n        if (index3 == -1) {\n            return \"null\";\n        } else {\n            return window[id + \"values\"][index3];\n    }\n};" + code2;
          for (var i = 0; i < mapIDs.length; i++) {
            code2 = "var " +  mapIDs[i] + "keys = [\"empty\"];\n" + code2;
            code2 = "var " +  mapIDs[i] + "values = [\"empty\"];\n" + code2;
@@ -267,6 +275,7 @@
         
         
         code2 = code2.replace("{","{\n");
+        code2 = code2.replace("(getMapData(","getMapData(");
         document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code2.replace(";",";\n");
 
 
@@ -530,6 +539,21 @@
           this.setHelpUrl("");
         }
       };
+      Blockly.Blocks['get_map_data'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Get Map Data")
+            .appendField(new Blockly.FieldTextInput("MapID"), "id");
+          this.appendValueInput("Key")
+            .setCheck(null)
+            .appendField("With key");
+          this.setInputsInline(true);
+          this.setOutput(true, null);
+          this.setColour(330);
+          this.setTooltip("");
+          this.setHelpUrl("");
+        }
+      };
 
 
 
@@ -668,7 +692,6 @@
         var text_id = block.getFieldValue('id');
         var value_key = Blockly.JavaScript.valueToCode(block, 'Key', Blockly.JavaScript.ORDER_ATOMIC);
         var value_value = Blockly.JavaScript.valueToCode(block, 'Value', Blockly.JavaScript.ORDER_ATOMIC);
-        // TODO: Assemble JavaScript into code variable.
         code = "indexVal = " + text_id + "keys.indexOf(" + value_key + ");\nif (indexVal == -1) {\n" + text_id + "keys.push(" + value_key + ");\n" + text_id + "values.push(" + value_value + ");\n} else {\n" + text_id + "values[indexVal] = " + value_value + ";\n}\n"
         hasmaps = true;
         if (mapIDs.indexOf(text_id) == -1) {
@@ -690,6 +713,20 @@
 
         var code = "msg.channel.send({embed: {title: " + temptitle + ", description: " + tempdesc + ", color: " + dropdown_name + "}});";
         return code;
+      };
+      
+      
+      Blockly.JavaScript['get_map_data'] = function(block) {
+        var text_id = block.getFieldValue('id');
+        var value_key = Blockly.JavaScript.valueToCode(block, 'Key', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        var id = value_key.replace("\"","");
+        id = id.replace("(","");
+        id = id.replace(")","");
+        hasmaps = true;
+        var code = "getMapData(\"" + text_id + "\", \"" + id + ")"
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.JavaScript.ORDER_NONE];
       };
 
     </script>
