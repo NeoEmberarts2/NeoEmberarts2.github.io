@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>DragABot.js</title>
-<!--these should be in EXACTLY this order in order for it to work-->
+
     <script src="https://codepen.io/therandomcrafter83/pen/jOWNGmN.js"></script>
     <script src="https://codepen.io/neoemberarts2/pen/NWxKPqX.js"></script>
     <script src="https://codepen.io/neoemberarts2/pen/PoZYwqm.js"></script>
@@ -147,6 +147,13 @@
             </block>
           </value>
         </block>
+        <block type="set_activity" id="e5YU#,~{^x*^%)i|f|j6" x="-113" y="88">
+          <value name="Activity">
+            <block type="string" id="qVLf{2FOwgey1oU$y1vE">
+              <field name="String">Minecraft</field>
+            </block>
+          </value>
+        </block>
       </category>
       <category name="Actions" colour="#5ba55b">
         <block type="send_message">
@@ -170,6 +177,7 @@
             </block>
           </value>
         </block>
+        <block type="delete_message"></block>
       </category>
       <category name="Data" colour="#995ba5">
         <block type="string">
@@ -266,14 +274,14 @@
         code2 = code.replace(";",";\n");
         if (code2.indexOf("values.push(") > -1) {
           code2 = "var index3 = \"\";\nfunction getMapData(id, key) {\n    index3 = window[id + \"keys\"].indexOf(key);\n        if (index3 == -1) {\n            return \"null\";\n        } else {\n            return window[id + \"values\"][index3];\n    }\n};" + code2;
-         for (var i = 0; i < mapIDs.length; i++) {
-           code2 = "var " +  mapIDs[i] + "keys = [\"empty\"];\n" + code2;
-           code2 = "var " +  mapIDs[i] + "values = [\"empty\"];\n" + code2;
-         }
+          for (var i = 0; i < mapIDs.length; i++) {
+            code2 = "var " +  mapIDs[i] + "keys = [\"empty\"];\n" + code2;
+            code2 = "var " +  mapIDs[i] + "values = [\"empty\"];\n" + code2;
+          }
         }
-        
-        
-        
+
+
+
         code2 = code2.replace("{","{\n");
         code2 = code2.replace("(getMapData(","getMapData(");
         document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code2.replace(";",";\n");
@@ -414,7 +422,7 @@
         init: function() {
           this.appendDummyInput()
             .appendField("Get User")
-            .appendField(new Blockly.FieldDropdown([["ID","msg.author"], ["Name","msg.author.username"]]), "NAME");
+            .appendField(new Blockly.FieldDropdown([["ID","msg.authhor"], ["Name","msg.author.username"], ["Tag","msg.author.tag"]]), "NAME");
           this.setOutput(true, null);
           this.setColour(290);
           this.setTooltip("Gets users details");
@@ -555,6 +563,30 @@
         }
       };
 
+      Blockly.Blocks['delete_message'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("Delete users message");
+          this.setPreviousStatement(true, ["Number", "Boolean", "Array", "String", "other"]);
+          this.setNextStatement(true, ["Number", "Boolean", "Array", "String", "other"]);
+          this.setColour(120);
+          this.setTooltip("Deletes the latest message sent by the user that activated this line of code");
+          this.setHelpUrl("");
+        }
+      };
+      Blockly.Blocks['set_activity'] = {
+        init: function() {
+          this.appendValueInput("Activity")
+            .setCheck(null)
+            .appendField("Set game status to playing");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, ["Number", "Boolean", "Array", "String", "other"]);
+          this.setNextStatement(true, ["Number", "Boolean", "Array", "String", "other"]);
+          this.setColour(20);
+          this.setTooltip("Sets the bots activity status as a game");
+          this.setHelpUrl("");
+        }
+      };
 
 
 
@@ -563,7 +595,8 @@
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
       Blockly.JavaScript['on_message'] = function(block) {
         var statements_events = Blockly.JavaScript.statementToCode(block, 'events');
         // TODO: Assemble JavaScript into code variable.
@@ -625,7 +658,7 @@
         if (dropdown_name == "===") {
           var code = "if (msg.content.toLowerCase() == " + value_value + ") {" + statements_code_inside + "}";
         } else if (dropdown_name == "contains") {
-          var code = "if (msg.content.includes(" + value_value + ")) {" + statements_code_inside + "}";
+          var code = "if (msg.content.includes" + value_value + ") {" + statements_code_inside + "}";
         }
         return code;
       };
@@ -714,8 +747,8 @@
         var code = "msg.channel.send({embed: {title: " + temptitle + ", description: " + tempdesc + ", color: " + dropdown_name + "}});";
         return code;
       };
-      
-      
+
+
       Blockly.JavaScript['get_map_data'] = function(block) {
         var text_id = block.getFieldValue('id');
         var value_key = Blockly.JavaScript.valueToCode(block, 'Key', Blockly.JavaScript.ORDER_ATOMIC);
@@ -728,6 +761,24 @@
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.JavaScript.ORDER_NONE];
       };
+      
+      
+      Blockly.JavaScript['delete_message'] = function(block) {
+        // TODO: Assemble JavaScript into code variable.
+        var code = "msg.delete().catch(O_o=>{});\n";
+        return code;
+      };
+      Blockly.JavaScript['set_activity'] = function(block) {
+        var value_activity = Blockly.JavaScript.valueToCode(block, 'Activity', Blockly.JavaScript.ORDER_ATOMIC);
+        // TODO: Assemble JavaScript into code variable.
+        var val5 = value_activity.replace("(","");
+        var val5 = val5.replace(")","");
+        var code = "client.user.setActivity(" + val5 + ");\n";
+        return code;
+      };
+
+      
+      
 
     </script>
 
