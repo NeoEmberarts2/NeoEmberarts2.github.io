@@ -10,6 +10,8 @@
   <script src="https://codepen.io/neoemberarts2/pen/PoZYwqm.js"></script>
   <script src="https://codepen.io/neoemberarts2/pen/mdVbyVR.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.11.0/beautify.js"></script>
+
 
   <style>
     body {
@@ -329,8 +331,8 @@
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       //Download
-      var code2 = "";
-      code2 = code.replace(";", ";\n");
+      var code2 = code;
+
       if (code2.indexOf("values.push(") > -1) {
         code2 = "var index3 = \"\";\nfunction getMapData(id, key) {\n    index3 = window[id + \"keys\"].indexOf(key);\n        if (index3 == -1) {\n            return \"null\";\n        } else {\n            return window[id + \"values\"][index3];\n    }\n};" + code2;
         for (var i = 0; i < mapIDs.length; i++) {
@@ -339,16 +341,14 @@
         }
       }
 
-      code2 = code2.replace("{", "{\n");
-      code2 = code2.replace("(getMapData(", "getMapData(");
-      document.getElementById("CodeText").innerHTML = "const Discord = require(\'discord.js\');\nconst client = new Discord.Client();\n" + code2.replace(";", ";\n");
 
+      console.log(js_beautify(code2).replace(String.fromCharCode(10), "<br>"))
+      document.getElementById("CodeText").innerHTML = js_beautify("const Discord = require(\'discord.js\'); const client = new Discord.Client();" + code2).replace(new RegExp(String.fromCharCode(10), "gmi"), "<br>", {indent_size: 4, space_in_empty_paren: true});
 
-      download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n" + code2, 'BotCode.txt', 'text/plain');
+      download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n" + js_beautify(code2), 'BotCode.txt', 'text/plain');
 
     }
   </script>
-
 
   <script>
     var temp = "";//don't remove this
