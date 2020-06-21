@@ -1,39 +1,17 @@
-Blockly.Blocks['if'] = {
+Blockly.Blocks['string_concat'] = {
     init: function () {
-        this.setHelpUrl(Blockly.Msg.CONTROLS_IF_HELPURL);
-        this.setColour(230);
-        this.appendValueInput('IF0')
-            .setCheck('Boolean')
-            .appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
-        this.appendStatementInput('DO0')
-            .appendField(Blockly.Msg.CONTROLS_IF_MSG_THEN);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setMutator(new Blockly.Mutator(['controls_if_elseif', 'controls_if_else']));
-        // Assign'this' to a variable for use in the tooltip closure below.
-        var thisBlock = this;
-        this.setTooltip(function () {
-            if (!thisBlock.elseifCount_ && !ThisBlock.elseCount_) {
-                return Blockly.Msg.CONTROLS_IF_TOOLTIP_1;
-                ;
-            } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
-                return Blockly.Msg.CONTROLS_IF_TOOLTIP_2;
-                ;
-            } else if (thisBlock.elseifCount_ && !ThisBlock.elseCount_) {
-                return Blockly.Msg.CONTROLS_IF_TOOLTIP_3;
-                ;
-            } else if (thisBlock.elseifCount_ && thisBlock.elseCount_) {
-                return Blockly.Msg.CONTROLS_IF_TOOLTIP_4;
-                ;
-            }
-            return '';
+        this.appendValueInput("IF0")
+            .setCheck(["String", "Number"])
+            .appendField("Join Strings: ");
+        this.setOutput(true, null);
+        this.setColour(120);
+        this.setTooltip("create text with strings or numbers");
+        this.setHelpUrl("");
+        this.setMutator(new Blockly.Mutator(['item']));
 
-        });
         this.elseifCount_ = 0;
-        this.elseCount_ = 0;
 
     },
-
 
     mutationToDom: function () {
         if (!this.elseifCount_ && !this.elseCount_) {
@@ -52,20 +30,18 @@ Blockly.Blocks['if'] = {
         return container;
 
     },
-
     domToMutation: function (xmlElement) {
         this.elseifCount_ = parseInt(xmlElement.getAttribute('elseif'), 10) || 0;
         this.elseCount_ = parseInt(xmlElement.getAttribute('else'), 10) || 0;
         this.updateShape_();
 
     },
-
     decompose: function (workspace) {
-        var containerBlock = workspace.newBlock('controls_if_if');
+        var containerBlock = workspace.newBlock('item');//TODO: create another seperate block so that the blocks arn't disabled
         containerBlock.initSvg();
         var connection = containerBlock.nextConnection;
         for (var i = 1; i <= this.elseifCount_; i++) {
-            var elseifBlock = workspace.newBlock('controls_if_elseif');
+            var elseifBlock = workspace.newBlock('item');
             elseifBlock.initSvg();
             connection.connect(elseifBlock.previousConnection);
             connection = elseifBlock.nextConnection;
@@ -80,7 +56,6 @@ Blockly.Blocks['if'] = {
         return containerBlock;
 
     },
-
     compose: function (containerBlock) {
         var clauseBlock = containerBlock.nextConnection.targetBlock();
         // Count number of inputs.
@@ -91,7 +66,7 @@ Blockly.Blocks['if'] = {
         var elseStatementConnection = null;
         while (clauseBlock) {
             switch (clauseBlock.type) {
-                case 'controls_if_elseif':
+                case 'item':
                     this.elseifCount_++;
                     valueConnections.push(clauseBlock.valueConnection_);
                     statementConnections.push(clauseBlock.statementConnection_);
@@ -110,24 +85,20 @@ Blockly.Blocks['if'] = {
         this.updateShape_();
         for (var i = 1; i <= this.elseifCount_; i++) {
             Blockly.Mutator.reconnect(valueConnections[i], this, 'IF' + i);
-            Blockly.Mutator.reconnect(statementConnections[i], this, 'DO' + i);
 
         }
         Blockly.Mutator.reconnect(elseStatementConnection, this, 'ELSE');
     },
-
     saveConnections: function (containerBlock) {
         var clauseBlock = containerBlock.nextConnection.targetBlock();
         var i = 1;
         while (clauseBlock) {
             switch (clauseBlock.type) {
-                case 'controls_if_elseif':
+                case 'item':
                     var inputIf = this.getInput('IF' + i);
-                    var inputDo = this.getInput('DO' + i);
                     clauseBlock.valueConnection_ =
                         inputIf && inputIf.connection.targetConnection;
-                    clauseBlock.statementConnection_ =
-                        inputDo && inputDo.connection.targetConnection;
+
                     i++;
                     break;
                 case 'controls_if_else':
@@ -145,7 +116,6 @@ Blockly.Blocks['if'] = {
         }
 
     },
-
     updateShape_: function () {
         // Delete everything.
         if (this.getInput('ELSE')) {
@@ -155,7 +125,6 @@ Blockly.Blocks['if'] = {
         var i = 1;
         while (this.getInput('IF' + i)) {
             this.removeInput('IF' + i);
-            this.removeInput('DO' + i);
             i++;
 
         }
@@ -163,39 +132,27 @@ Blockly.Blocks['if'] = {
         for (var i = 1; i <= this.elseifCount_; i++) {
             this.appendValueInput('IF' + i)
                 .setCheck('Boolean')
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSEIF);
-            this.appendStatementInput('DO' + i)
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_THEN);
+                .appendField("and");
 
         };
-        if (this.elseCount_) {
-            this.appendStatementInput('ELSE')
-                .appendField(Blockly.Msg.CONTROLS_IF_MSG_ELSE);
 
-        }
 
     }
+
 };
 
 
-Blockly.JavaScript['if'] = function (block) {
+Blockly.JavaScript['string_concat'] = function (block) {
+
     var n = 0;
-    var code = '', branchCode, conditionCode;
+    var code = '', conditionCode;
+
     do {
-        conditionCode = Blockly.JavaScript.valueToCode(block, 'IF' + n,
-            Blockly.JavaScript.ORDER_NONE) || 'false';
-        branchCode = Blockly.JavaScript.statementToCode(block, 'DO' + n);
-        code += (n > 0 ? 'else' : '') +
-            ' if (' + conditionCode + ') {\n' + branchCode + '}';
+        conditionCode = Blockly.JavaScript.valueToCode(block, 'IF' + n, Blockly.JavaScript.ORDER_NONE) || "";
 
+        code += (n > 0 ? '+' : '') + conditionCode.toString();
         ++n;
+    } while (block.getInput("IF" + n));
 
-    } while (block.getInput('IF' + n));
-
-    if (block.getInput('ELSE')) {
-        branchCode = Blockly.JavaScript.statementToCode(block, 'ELSE');
-        code += 'else {\n' + branchCode + '}';
-
-    }
-    return code + '\n';
+    return code;//[code, Blockly.JavaScript.ORDER_NONE];
 };

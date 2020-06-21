@@ -11,9 +11,8 @@ Blockly.Blocks['string'] = {
 
 Blockly.JavaScript['string'] = function (block) {
     var text_string = block.getFieldValue('String');
-    // TODO: Assemble JavaScript into code variable.
     var code = "\"" + text_string + "\"";
+    console.log(code);
 
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code.toLowerCase(), Blockly.JavaScript.ORDER_NONE];
+    return [code, Blockly.JavaScript.ORDER_NONE];
 };
