@@ -136,11 +136,14 @@
   <!--Categories-->
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="#5ba58c">
-      <block type="if" class="LogicBlock">
+    <category name="JavaScript" colour="#FFFF00"></category>
+    <sep></sep>
+    <category name="Logic" colour="#C684C1">
+
+      <block type="if" class="Logic" dir="JavaScriptBlocks">
         <field name="compare">=</field>
         <value name="statement1">
-          <block type="string" class="DataBlock">
+          <block type="string">
             <field name="String">String</field>
           </block>
         </value>
@@ -150,9 +153,9 @@
           </block>
         </value>
       </block>
-      <block type="if_prefix_equals" class="LogicBlock"></block>
+      <block type="if_prefix_equals" class="Logic" dir="JavaScriptBlocks"></block>
 
-      <block type="if_message_equals" class="LogicBlock">
+      <block type="if_message_equals" class="Logic" dir="JavaScriptBlocks">
         <field name="NAME">===</field>
         <value name="Value">
           <block type="string">
@@ -160,31 +163,111 @@
           </block>
         </value>
       </block>
+
     </category>
-    <category name="Events" colour="#5b67a5">
-      <block type="on_message" class="EventBlock"></block>
+
+
+    <category name="Loops" colour="#5C80A5">
+
     </category>
-    <category name="Settings" colour="#a5745b">
-      <block type="ignore__bots" class="SettingBlock">
+
+    <category name="Math" colour="#DCDDA8">
+
+    </category>
+
+    <category name="Strings" colour="#5BA55B">
+
+      <block type="string" dir="JavaScriptBlocks" class="Strings">
+        <field name="String">String</field>
+      </block>
+
+    </category>
+
+    <category name="Lists" colour="#44BBA3">
+
+    </category>
+
+    <category name="Color" colour="#FF0000">
+
+    </category>
+
+    <category name="Variables" colour="#549AD8">
+
+      <block type="variables" class="Variables" dir="JavaScriptBlocks">
+        <field name="varName">var</field>
+        <value name="data">
+          <block type="string">
+            <field name="String">String</field>
+          </block>
+        </value>
+      </block>
+      <block type="get_var_data" class="Variables" dir="JavaScriptBlocks">
+        <field name="varName">var</field>
+      </block>
+
+
+      <block type="map_data" class="Variables" dir="JavaScriptBlocks">
+        <field name="id">MapID</field>
+        <value name="Key">
+          <block type="string">
+            <field name="String">String</field>
+          </block>
+        </value>
+        <value name="Value">
+          <block type="string">
+            <field name="String">String</field>
+          </block>
+        </value>
+      </block>
+      <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213" class="Variables" dir="JavaScriptBlocks">
+        <field name="id">MapID</field>
+        <value name="Key">
+          <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
+            <field name="String">Key</field>
+          </block>
+        </value>
+      </block>
+
+
+    </category>
+
+    <category name="Functions" colour="#E7B500">
+
+    </category>
+
+    <sep></sep>
+    <sep></sep>
+
+    <category name="Discord" colour="#6A7FC8"></category>
+    <sep></sep>
+
+
+    <category name="Settings" colour="#63E2BD">
+
+      <block type="ignore__bots" class="Settings" dir="DiscordBlocks">
         <field name="NAME">if(msg.author.bot) return;</field>
       </block>
-      <block type="set_prefix" class="SettingBlock">
+      <block type="set_prefix" class="Settings" dir="DiscordBlocks">
         <value name="prefix">
           <block type="string">
             <field name="String">String</field>
           </block>
         </value>
       </block>
-      <block type="set_activity" id="e5YU#,~{^x*^%)i|f|j6" x="-113" y="88" class="SettingBlock">
+      <block type="set_activity" id="e5YU#,~{^x*^%)i|f|j6" x="-113" y="88" class="Settings" dir="DiscordBlocks">
         <value name="Activity">
           <block type="string" id="qVLf{2FOwgey1oU$y1vE">
             <field name="String">Minecraft</field>
           </block>
         </value>
       </block>
+
+
     </category>
-    <category name="Actions" colour="#5ba55b">
-      <block type="send_message" class="ActionBlock">
+
+    <category name="Actions" colour="#67964F">
+
+      <block type="send_message" class="Actions" dir="DiscordBlocks">
         <field name="NAME">msg.channel.send(</field>
         <value name="NAME">
           <block type="string">
@@ -192,7 +275,7 @@
           </block>
         </value>
       </block>
-      <block type="send_embed" class="ActionBlock">
+      <block type="send_embed" class="Actions" dir="DiscordBlocks">
         <field name="NAME">0</field>
         <value name="Title">
           <block type="string">
@@ -205,63 +288,46 @@
           </block>
         </value>
       </block>
-      <block type="delete_message" class="ActionBlock"></block>
+      <block type="delete_message" class="Actions" dir="DiscordBlocks"></block>
+
+
     </category>
-    <category name="Data" colour="#995ba5">
-      <block type="string">
-        <field name="String">String</field>
-      </block>
-      <block type="message" class="DataBlock">
+
+    <category name="Events" colour="#FF8081">
+
+      <block type="on_message" class="Events" dir="DiscordBlocks"></block>
+
+    </category>
+
+    <category name="Data" colour="#5b67a5">
+
+      <block type="message" dir="DiscordBlocks" class="Data">
         <field name="NAME">.replaceAll(prefix,"")</field>
       </block>
-      <block type="get_user" class="DataBlock">
+
+      <block type="get_user" dir="DiscordBlocks" class="Data">
         <field name="NAME">msg.author</field>
       </block>
-      <block type="prefix" class="DataBlock"></block>
+
+      <block type="prefix" dir="DiscordBlocks" class="Data"></block>
+
+
     </category>
-    <category name="Variables" colour="#a55b80">
-      <block type="variables" class="VariableBlock">
-        <field name="varName">var</field>
-        <value name="data">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="get_var_data" class="VariableBlock">
-        <field name="varName">var</field>
+
+    <category name="Client data" colour="#9fa55b">
+
+      <block type="client_login" class="ClientData" dir="DiscordBlocks">
+        <field name="Token">Paste token here</field>
       </block>
 
+    </category>
 
-      <block type="map_data" class="VariableBlock">
-        <field name="id">MapID</field>
-        <value name="Key">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-        <value name="Value">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213" class="VariableBlock">
-        <field name="id">MapID</field>
-        <value name="Key">
-          <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
-            <field name="String">Key</field>
-          </block>
-        </value>
-      </block>
+    <sep></sep>
 
     </category>
     <sep></sep>
-    <category name="Client data" colour="#9fa55b">
-      <block type="client_login" class="ClientDataBlock">
-        <field name="Token">Paste token here</field>
-      </block>
-    </category>
+
+
   </xml>
 
 
@@ -289,24 +355,17 @@
 
     }
 
-    /* include any js files here */
-    //could just be one thing but maybe do something with each thing individually later :shrug:
-    let logicArr = document.getElementsByClassName("LogicBlock");
-    let eventArr = document.getElementsByClassName("EventBlock");
-    let settingsArr = document.getElementsByClassName("SettingBlock");
-    let actionsArr = document.getElementsByClassName("ActionBlock");
-    let dataArr = document.getElementsByClassName("DataBlock");
-    let varArr = document.getElementsByClassName("VariableBlock");
-    let clientArr = document.getElementsByClassName("ClientDataBlock");
+    let JSblocks = document.querySelectorAll("[dir=JavaScriptBlocks]");
+    let Discblocks = document.querySelectorAll("[dir=DiscordBlocks]");
 
-    let objArr = [logicArr, eventArr, settingsArr, actionsArr, dataArr, varArr, clientArr];
+    for (let file of Object.values(JSblocks).concat(Object.values(Discblocks))) {
+      let fileName = file.getAttribute("type");
+      let classDir = file.getAttribute("class");
+      let dir = file.getAttribute("dir");
+      if (!dir || !classDir || !fileName) continue
 
-    for (let logicFile of objArr) {
-      for (let file of logicFile) {
-        let fileName = file.getAttribute("type");
-        let dir = file.getAttribute("class")
-        include('BlocklyBlocks/' + dir + 's/' + fileName + ".js");
-      }
+      include('BlocklyBlocks/' + dir + "/" + classDir + '/' + fileName + ".js");
+
     }
 
     function download(text, name, type) {
@@ -342,7 +401,6 @@
       }
 
 
-      console.log(js_beautify(code2).replace(String.fromCharCode(10), "<br>"))
       document.getElementById("CodeText").innerHTML = js_beautify("const Discord = require(\'discord.js\'); const client = new Discord.Client();" + code2).replace(new RegExp(String.fromCharCode(10), "gmi"), "<br>", {indent_size: 4, space_in_empty_paren: true});
 
       download("const Discord = require(\'discord.js\'); \nconst client = new Discord.Client();\n" + js_beautify(code2), 'BotCode.txt', 'text/plain');
