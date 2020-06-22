@@ -12,7 +12,6 @@ Blockly.Blocks['string'] = {
 Blockly.JavaScript['string'] = function (block) {
     var text_string = block.getFieldValue('String');
     var code = "\"" + text_string + "\"";
-    console.log(code);
 
     return [code, Blockly.JavaScript.ORDER_NONE];
 };

@@ -147,11 +147,6 @@
             <field name="String">String</field>
           </block>
         </value>
-        <value name="statement2">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
       </block>
       <block type="if_prefix_equals" class="Logic" dir="JavaScriptBlocks"></block>
 
@@ -164,6 +159,15 @@
         </value>
       </block>
 
+      <block type="equality" class="Logic" dir="JavaScriptBlocks"></block>
+
+      <block type="and_or_operators" class="Logic" dir="JavaScriptBlocks"></block>
+      <block type="not_operator" class="Logic" dir="JavaScriptBlocks"></block>
+      <block type="boolean" class="Logic" dir="JavaScriptBlocks"></block>
+      <block type="null_undefined" class="Logic" dir="JavaScriptBlocks"></block>
+      <block type="test_ternary" class="Logic" dir="JavaScriptBlocks"></block>
+
+
     </category>
 
 
@@ -172,6 +176,7 @@
     </category>
 
     <category name="Math" colour="#DCDDA8">
+      <block type="NaN" class="Math" dir="JavaScriptBlocks"></block>
 
     </category>
 
@@ -180,6 +185,12 @@
       <block type="string" dir="JavaScriptBlocks" class="Strings">
         <field name="String">String</field>
       </block>
+
+      <block type="string_concat" dir="JavaScriptBlocks" class="Strings"></block>
+
+      <div class="hide">
+        <block type="item" dir="JavaScriptBlocks" class="Strings"></block>
+      </div>
 
     </category>
 
