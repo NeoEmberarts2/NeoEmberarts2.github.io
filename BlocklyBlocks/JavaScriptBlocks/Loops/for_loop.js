@@ -1,40 +1,36 @@
 Blockly.Blocks['for_loop'] = {
     init: function () {
-        this.appendValueInput("fromNumber")
-            .appendField("Repeat from")
-            .appendField(new Blockly.FieldTextInput(0))
-            .setCheck("Number")
-            .setAlign(Blockly.ALIGN_RIGHT);
-        this.appendDummyInput("toNumber")
-            .appendField("To")
-            .appendField(new Blockly.FieldTextInput(1));
-        this.appendStatementInput("codeinside");
-        this.setInputsInline(true);
-        this.setPreviousStatement(true, "Other");
-        this.setNextStatement(true, ["final", "Other"]);
-        this.setColour("#C684C1");
-        this.setTooltip("Loop between one number to the next!");
+        this.appendDummyInput()
+            .appendField("Count with")
+            .appendField(new Blockly.FieldVariable("i"), "variable")
+            .appendField("from")
+            .appendField(new Blockly.FieldNumber(0), "from")
+            .appendField("to")
+            .appendField(new Blockly.FieldNumber(10), "to")
+            .appendField("by")
+            .appendField(new Blockly.FieldNumber(1, 0), "increment");
+        this.appendStatementInput("code")
+            .setCheck(null)
+            .appendField("do");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(330);
+        this.setTooltip("With the variable 'i', starting at 'from' and going to 'to', increment by 'value' for each iteration");
         this.setHelpUrl("");
     }
 };
 
 Blockly.JavaScript['for_loop'] = function (block) {
-    let fromNumber = Blockly.JavaScript.valueToCode(block, "Repeat from", Blockly.JavaScript.ORDER_ATOMIC);
-    let toNumber = Blockly.JavaScript.valueToCode(block, "toNumber", Blockly.JavaScript.ORDER_ATOMIC);
-    console.log(fromNumber, toNumber);
-    let statementInside = Blockly.JavaScript.statementToCode(block, 'codeinside');
+    var variable_variable = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('variable'), Blockly.Variables.NAME_TYPE);
+    var number_from = block.getFieldValue('from');
+    var number_to = block.getFieldValue('to');
+    var number_increment = block.getFieldValue('increment');
+    var statements_code = Blockly.JavaScript.statementToCode(block, 'code');
 
-    let code = '';
+    let boolean = (number_from < number_to ? true : false);//determines if number from is greater than number to
 
-    if (fromNumber > toNumber) {
-        code = `for(let i = ` + fromNumber + `; ` + fromNumber + ` > ` + toNumber + `; i--){
-            `+ statementInside + `
-        }`;
-    } else {
-        code = `for(let i = ` + fromNumber + `; ` + fromNumber + ` < ` + toNumber + `; i++){
-            `+ statementInside + `
-        }`;
-    }
+    var code = "for(" + variable_variable + " = " + number_from + "; " + variable_variable +
+        (boolean ? "<" : ">") + number_to + "; " + variable_variable + "+= " + (boolean ? number_increment : -1 * number_increment) + "){" + statements_code + "}";
 
     return code;
 };

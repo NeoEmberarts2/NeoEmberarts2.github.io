@@ -11,6 +11,7 @@
   <script src="https://codepen.io/neoemberarts2/pen/mdVbyVR.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.11.0/beautify.js"></script>
+  <script src="ace.js" type="text/javascript" charset="utf-8"></script>
 
 
   <style>
@@ -28,6 +29,8 @@
 
 <body>
   <!--Button and code styles-->
+  <link rel="stylesheet" href="style.css">
+
   <style>
     /*Tooltip Setup*/
     .tooltip {
@@ -123,224 +126,291 @@
       bottom: 0;
     }
   </style>
-  <p>
-    <button class="button4" onclick="showCode();">Show Code</button>
-  </p>
+
+  <table width="100%" height="100%">
+    <tr>
+      <td>
+
+      </td>
+      <td class="farSide">
+
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon">Blocks</td>
+            <td id="tab_viewcode" class="taboff tab_collapse">Code</td>
+            <td id="tab_download" class="taboff tab_collapse">Download_Code</td>
+
+            <td id="tab_code" class="taboff">
+              <select id="code_menu"></select>
+            </td>
+            <td class="tabmax">
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+  </table>
+
+  <div id="content_blocks" class="content"></div>
+
+  <pre id="content_viewcode" class=""><div id="Codeveiw" class="CodeVeiw"></div></pre>
+  <pre id="content_download" class=""><div id="Download" class="CodeVeiw"></div></pre>
+
 
   <section id="blocklyContainer">
     <div id="blocklyDiv"></div>
   </section>
 
 
-
   <!--Categories-->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="workspaceBlocks" style="display: none">
 
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="JavaScript" colour="#FFFF00"></category>
-    <sep></sep>
-    <category name="Logic" colour="#C684C1">
+    <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+      <category name="JavaScript" colour="#FFFF00"></category>
+      <sep></sep>
+      <category name="Logic" colour="#C684C1">
 
-      <block type="if" class="Logic" dir="JavaScriptBlocks">
-        <field name="compare">=</field>
-        <value name="statement1">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="if_prefix_equals" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="if" class="Logic" dir="JavaScriptBlocks">
+          <field name="compare">=</field>
+          <value name="statement1">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="if_prefix_equals" class="Logic" dir="JavaScriptBlocks"></block>
 
-      <block type="if_message_equals" class="Logic" dir="JavaScriptBlocks">
-        <field name="NAME">===</field>
-        <value name="Value">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
+        <block type="if_message_equals" class="Logic" dir="JavaScriptBlocks">
+          <field name="NAME">===</field>
+          <value name="Value">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
 
-      <block type="equality" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="equality" class="Logic" dir="JavaScriptBlocks"></block>
 
-      <block type="and_or_operators" class="Logic" dir="JavaScriptBlocks"></block>
-      <block type="not_operator" class="Logic" dir="JavaScriptBlocks"></block>
-      <block type="boolean" class="Logic" dir="JavaScriptBlocks"></block>
-      <block type="null_undefined" class="Logic" dir="JavaScriptBlocks"></block>
-      <block type="test_ternary" class="Logic" dir="JavaScriptBlocks"></block>
-
-
-    </category>
+        <block type="and_or_operators" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="not_operator" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="boolean" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="null_undefined" class="Logic" dir="JavaScriptBlocks"></block>
+        <block type="test_ternary" class="Logic" dir="JavaScriptBlocks"></block>
 
 
-    <category name="Loops" colour="#5C80A5">
-
-    </category>
-
-    <category name="Math" colour="#DCDDA8">
-      <block type="NaN" class="Math" dir="JavaScriptBlocks"></block>
-
-    </category>
-
-    <category name="Strings" colour="#5BA55B">
-
-      <block type="string" dir="JavaScriptBlocks" class="Strings">
-        <field name="String">String</field>
-      </block>
-
-      <block type="string_concat" dir="JavaScriptBlocks" class="Strings"></block>
-
-      <div class="hide">
-        <block type="item" dir="JavaScriptBlocks" class="Strings"></block>
-      </div>
-
-    </category>
-
-    <category name="Lists" colour="#44BBA3">
-
-    </category>
-
-    <category name="Color" colour="#FF0000">
-
-    </category>
-
-    <category name="Variables" colour="#549AD8">
-
-      <block type="variables" class="Variables" dir="JavaScriptBlocks">
-        <field name="varName">var</field>
-        <value name="data">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="get_var_data" class="Variables" dir="JavaScriptBlocks">
-        <field name="varName">var</field>
-      </block>
+      </category>
 
 
-      <block type="map_data" class="Variables" dir="JavaScriptBlocks">
-        <field name="id">MapID</field>
-        <value name="Key">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-        <value name="Value">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213" class="Variables" dir="JavaScriptBlocks">
-        <field name="id">MapID</field>
-        <value name="Key">
-          <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
-            <field name="String">Key</field>
-          </block>
-        </value>
-      </block>
+      <category name="Loops" colour="#5C80A5">
+
+        <block type="repeat_loop" class="Loops" dir="JavaScriptBlocks"></block>
+        <block type="while_loop" class="Loops" dir="JavaScriptBlocks"></block>
+        <block type="for_loop" class="Loops" dir="JavaScriptBlocks"></block>
+        <block type="for_in_loop" class="Loops" dir="JavaScriptBlocks"></block>
+        <block type="for_each_loop" class="Loops" dir="JavaScriptBlocks"></block>
+        <block type="break_continue" class="Loops" dir="JavaScriptBlocks"></block>
+
+      </category>
+
+      <category name="Math" colour="#DCDDA8">
+
+        <block type="number" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="NaN" class="Math" dir="JavaScriptBlocks"></block>
+        <block type="isNan" class="Math" dir="JavaScriptBlocks"></block>
+        <block type="toNum" class="Math" dir="JavaScriptBlocks"></block>
+
+        <block type="operations" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="basic_math_functions" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="trig" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="common_constants" dir="JavaScriptBlocks" class="Math"></block>
+
+        <block type="number_check" dir="JavaScriptBlocks" class="Math">
+          <value name="number">
+            <block type="number" class="Math" dir="JavaScriptBlocks">
+              <field name="Number">Number</field>
+            </block>
+          </value>
+        </block>
+
+        <block type="round_number" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="of_list" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="remainder_of" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="max_min" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="random_between" dir="JavaScriptBlocks" class="Math"></block>
+        <block type="random" dir="JavaScriptBlocks" class="Math"></block>
 
 
-    </category>
+      </category>
 
-    <category name="Functions" colour="#E7B500">
+      <category name="Strings" colour="#5BA55B">
 
-    </category>
+        <block type="string" dir="JavaScriptBlocks" class="Strings">
+          <field name="String">String</field>
+        </block>
 
-    <sep></sep>
-    <sep></sep>
+        <block type="string_concat" dir="JavaScriptBlocks" class="Strings"></block>
 
-    <category name="Discord" colour="#6A7FC8"></category>
-    <sep></sep>
+        <div class="hide">
+          <block type="item" dir="JavaScriptBlocks" class="Strings"></block>
+        </div>
 
+      </category>
 
-    <category name="Settings" colour="#63E2BD">
+      <category name="Lists" colour="#44BBA3">
 
-      <block type="ignore__bots" class="Settings" dir="DiscordBlocks">
-        <field name="NAME">if(msg.author.bot) return;</field>
-      </block>
-      <block type="set_prefix" class="Settings" dir="DiscordBlocks">
-        <value name="prefix">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="set_activity" id="e5YU#,~{^x*^%)i|f|j6" x="-113" y="88" class="Settings" dir="DiscordBlocks">
-        <value name="Activity">
-          <block type="string" id="qVLf{2FOwgey1oU$y1vE">
-            <field name="String">Minecraft</field>
-          </block>
-        </value>
-      </block>
+      </category>
 
+      <category name="Color" colour="#FF0000">
 
-    </category>
+      </category>
 
-    <category name="Actions" colour="#67964F">
+      <category name="Variables" colour="#549AD8">
 
-      <block type="send_message" class="Actions" dir="DiscordBlocks">
-        <field name="NAME">msg.channel.send(</field>
-        <value name="NAME">
-          <block type="string">
-            <field name="String">String</field>
-          </block>
-        </value>
-      </block>
-      <block type="send_embed" class="Actions" dir="DiscordBlocks">
-        <field name="NAME">0</field>
-        <value name="Title">
-          <block type="string">
-            <field name="String">Title</field>
-          </block>
-        </value>
-        <value name="Descriptioon">
-          <block type="string">
-            <field name="String">Description</field>
-          </block>
-        </value>
-      </block>
-      <block type="delete_message" class="Actions" dir="DiscordBlocks"></block>
+        <block type="variables" class="Variables" dir="JavaScriptBlocks">
+          <field name="varName">var</field>
+          <value name="data">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="get_var_data" class="Variables" dir="JavaScriptBlocks">
+          <field name="varName">var</field>
+        </block>
 
 
-    </category>
-
-    <category name="Events" colour="#FF8081">
-
-      <block type="on_message" class="Events" dir="DiscordBlocks"></block>
-
-    </category>
-
-    <category name="Data" colour="#5b67a5">
-
-      <block type="message" dir="DiscordBlocks" class="Data">
-        <field name="NAME">.replaceAll(prefix,"")</field>
-      </block>
-
-      <block type="get_user" dir="DiscordBlocks" class="Data">
-        <field name="NAME">msg.author</field>
-      </block>
-
-      <block type="prefix" dir="DiscordBlocks" class="Data"></block>
-
-
-    </category>
-
-    <category name="Client data" colour="#9fa55b">
-
-      <block type="client_login" class="ClientData" dir="DiscordBlocks">
-        <field name="Token">Paste token here</field>
-      </block>
-
-    </category>
-
-    <sep></sep>
-
-    </category>
-    <sep></sep>
+        <block type="map_data" class="Variables" dir="JavaScriptBlocks">
+          <field name="id">MapID</field>
+          <value name="Key">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+          <value name="Value">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213" class="Variables" dir="JavaScriptBlocks">
+          <field name="id">MapID</field>
+          <value name="Key">
+            <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
+              <field name="String">Key</field>
+            </block>
+          </value>
+        </block>
 
 
+      </category>
+
+      <category name="Functions" colour="#E7B500">
+
+      </category>
+
+      <sep></sep>
+      <sep></sep>
+
+      <category name="Discord" colour="#6A7FC8"></category>
+      <sep></sep>
+
+
+      <category name="Settings" colour="#63E2BD">
+
+        <block type="ignore__bots" class="Settings" dir="DiscordBlocks">
+          <field name="NAME">if(msg.author.bot) return;</field>
+        </block>
+        <block type="set_prefix" class="Settings" dir="DiscordBlocks">
+          <value name="prefix">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="set_activity" id="e5YU#,~{^x*^%)i|f|j6" x="-113" y="88" class="Settings" dir="DiscordBlocks">
+          <value name="Activity">
+            <block type="string" id="qVLf{2FOwgey1oU$y1vE">
+              <field name="String">Minecraft</field>
+            </block>
+          </value>
+        </block>
+
+
+      </category>
+
+      <category name="Actions" colour="#67964F">
+
+        <block type="send_message" class="Actions" dir="DiscordBlocks">
+          <field name="NAME">msg.channel.send(</field>
+          <value name="NAME">
+            <block type="string">
+              <field name="String">String</field>
+            </block>
+          </value>
+        </block>
+        <block type="send_embed" class="Actions" dir="DiscordBlocks">
+          <field name="NAME">0</field>
+          <value name="Title">
+            <block type="string">
+              <field name="String">Title</field>
+            </block>
+          </value>
+          <value name="Descriptioon">
+            <block type="string">
+              <field name="String">Description</field>
+            </block>
+          </value>
+        </block>
+        <block type="delete_message" class="Actions" dir="DiscordBlocks"></block>
+
+
+      </category>
+      <category name="Events" colour="#FF8081">
+
+        <block type="on_message" class="Events" dir="DiscordBlocks"></block>
+
+      </category>
+
+      <category name="Data" colour="#5b67a5">
+
+        <block type="message" dir="DiscordBlocks" class="Data">
+          <field name="NAME">.replaceAll(prefix,"")</field>
+        </block>
+
+        <block type="get_user" dir="DiscordBlocks" class="Data">
+          <field name="NAME">msg.author</field>
+        </block>
+
+        <block type="prefix" dir="DiscordBlocks" class="Data"></block>
+
+
+      </category>
+
+      <category name="Client data" colour="#9fa55b">
+
+        <block type="client_login" class="ClientData" dir="DiscordBlocks">
+          <field name="Token">Paste token here</field>
+        </block>
+
+      </category>
+
+      <sep></sep>
+
+      </category>
+      <sep></sep>
+
+
+    </xml>
   </xml>
-
 
 
   <!--Starter code-->
@@ -427,6 +497,8 @@
 
 
   </script>
+
+  <script src="tabs.js"></script>
 
 </body>
 

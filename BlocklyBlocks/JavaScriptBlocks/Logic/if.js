@@ -13,18 +13,18 @@ Blockly.Blocks['if'] = {
         // Assign'this' to a variable for use in the tooltip closure below.
         var thisBlock = this;
         this.setTooltip(function () {
-            if (!thisBlock.elseifCount_ && !ThisBlock.elseCount_) {
+            if (!thisBlock.elseifCount_ && !thisBlock.elseCount_) {
                 return Blockly.Msg.CONTROLS_IF_TOOLTIP_1;
-                ;
+
             } else if (!thisBlock.elseifCount_ && thisBlock.elseCount_) {
                 return Blockly.Msg.CONTROLS_IF_TOOLTIP_2;
-                ;
-            } else if (thisBlock.elseifCount_ && !ThisBlock.elseCount_) {
+
+            } else if (thisBlock.elseifCount_ && !thisBlock.elseCount_) {
                 return Blockly.Msg.CONTROLS_IF_TOOLTIP_3;
-                ;
+
             } else if (thisBlock.elseifCount_ && thisBlock.elseCount_) {
                 return Blockly.Msg.CONTROLS_IF_TOOLTIP_4;
-                ;
+
             }
             return '';
 
