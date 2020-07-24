@@ -10,18 +10,18 @@ Blockly.Blocks['break_continue'] = {
     onchange: function (event) {//to detect if it's in a for loop or not. Will disable if it's not
 
         if (event.type.toString() == "move") {
-            if (demoWorkspace.getBlockById(event.blockId) && demoWorkspace.getBlockById(event.blockId).type == "break_continue") {
+            if (Blockly.mainWorkspace.getBlockById(event.blockId) && Blockly.mainWorkspace.getBlockById(event.blockId).type == "break_continue") {
 
                 let nextID = event.newParentId;
                 let isInLoop = nextID ? true : false;
 
-                if (demoWorkspace.getBlockById(nextID)) {
+                if (Blockly.mainWorkspace.getBlockById(nextID)) {
 
 
-                    while (demoWorkspace.getBlockById(nextID).type.indexOf("loop") == -1) {
+                    while (Blockly.mainWorkspace.getBlockById(nextID).type.indexOf("loop") == -1) {
 
-                        nextID = demoWorkspace.getBlockById(nextID).parentBlock_.id;
-                        if (demoWorkspace.getBlockById(nextID).type.indexOf("loop") > -1) {
+                        nextID = Blockly.mainWorkspace.getBlockById(nextID).parentBlock_.id;
+                        if (Blockly.mainWorkspace.getBlockById(nextID).type.indexOf("loop") > -1) {
                             isInLoop = true;
                             break;
                         } else isInLoop = false;
@@ -29,7 +29,7 @@ Blockly.Blocks['break_continue'] = {
                     }
                 }
 
-                demoWorkspace.getBlockById(event.blockId).setDisabled(!isInLoop);
+                Blockly.mainWorkspace.getBlockById(event.blockId).setDisabled(!isInLoop);
 
 
             }

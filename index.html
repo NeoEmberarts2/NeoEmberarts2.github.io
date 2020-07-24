@@ -125,6 +125,19 @@
       right: 0;
       bottom: 0;
     }
+
+    .blocklyText text {
+      cursor: default
+    }
+
+    .blocklyFlyoutButton {
+      fill: #aaa;
+      cursor: default;
+    }
+
+    .blocklyFlyoutButton:hover {
+      fill: rgb(89, 87, 87)
+    }
   </style>
 
   <table width="100%" height="100%">
@@ -263,57 +276,89 @@
           <block type="item" dir="JavaScriptBlocks" class="Strings"></block>
         </div>
 
+        <block type="append_string" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="length" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="indexOf_string" dir="JavaScriptBlocks" class="Strings">
+
+          <value name="index">
+            <block type="string" class="Strings" dir="JavaScriptBlocks">
+              <field name="index">String</field>
+            </block>
+          </value>
+
+          <value name="from">
+            <block type="number" class="Math" dir="JavaScriptBlocks">
+              <field name="from">0</field>
+            </block>
+          </value>
+
+          <value name="find">
+            <block type="string" class="Strings" dir="JavaScriptBlocks">
+              <field name="find">String</field>
+            </block>
+          </value>
+
+        </block>
+
+        <block type="charAt" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="substring" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="toBlankCase" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="trim" dir="JavaScriptBlocks" class="Strings"></block>
+        <block type="consoleLog" dir="JavaScriptBlocks" class="Strings"></block>
+
+
       </category>
 
-      <category name="Lists" colour="#44BBA3">
+      <category name="Lists" colour="#745BA5">
+        <block type="listCreateWith" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="repeatedList" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listLength" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listEmpty" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listIndex" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listGetIndex" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listSetIndex" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listSubList" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listSort" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listSort" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listJoinOrSplit" dir="JavaScriptBlocks" class="Lists"></block>
+        <block type="listReverse" dir="JavaScriptBlocks" class="Lists"></block>
 
       </category>
+
+      <category name="Objects" colour="#00820f">
+
+        <block type="createNewObject" dir="JavaScriptBlocks" class="Objects"></block>
+
+        <block type="Key-Value-Pair" dir="JavaScriptBlocks" class="Objects"></block>
+
+      </category>
+
 
       <category name="Color" colour="#FF0000">
+        <block type="colorPicker" dir="JavaScriptBlocks" class="Color"></block>
+        <block type="colorRandom" dir="JavaScriptBlocks" class="Color"></block>
+        <block type="colorRGB" dir="JavaScriptBlocks" class="Color"></block>
+        <block type="colorHex" dir="JavaScriptBlocks" class="Color"></block>
 
       </category>
 
       <category name="Variables" colour="#549AD8">
 
-        <block type="variables" class="Variables" dir="JavaScriptBlocks">
-          <field name="varName">var</field>
-          <value name="data">
-            <block type="string">
-              <field name="String">String</field>
-            </block>
-          </value>
-        </block>
-        <block type="get_var_data" class="Variables" dir="JavaScriptBlocks">
-          <field name="varName">var</field>
-        </block>
-
-
-        <block type="map_data" class="Variables" dir="JavaScriptBlocks">
-          <field name="id">MapID</field>
-          <value name="Key">
-            <block type="string">
-              <field name="String">String</field>
-            </block>
-          </value>
-          <value name="Value">
-            <block type="string">
-              <field name="String">String</field>
-            </block>
-          </value>
-        </block>
-        <block type="get_map_data" id="a]xv:s;zH##u26j_zJns" x="88" y="213" class="Variables" dir="JavaScriptBlocks">
-          <field name="id">MapID</field>
-          <value name="Key">
-            <block type="string" id="W80Y:q#?`ejmD5T@8N|v">
-              <field name="String">Key</field>
-            </block>
-          </value>
-        </block>
+        <button text="Create a new variable" callbackkey="mum"></button>
+        <block type="getVar" dir="JavaScriptBlocks" class="Variables"></block>
+        <block type="setVar" dir="JavaScriptBlocks" class="Variables"></block>
 
 
       </category>
 
       <category name="Functions" colour="#E7B500">
+
+
+        <block type="createReturnFunc" dir="JavaScriptBlocks" class="Functions"></block>
+        <block type="createVoidFunc" dir="JavaScriptBlocks" class="Functions"></block>
+        <block type="ifReturn" dir="JavaScriptBlocks" class="Functions"></block>
+        <block type="callVoid" dir="JavaScriptBlocks" class="Functions"></block>
+        <block type="callReturn" dir="JavaScriptBlocks" class="Functions"></block>
 
       </category>
 
@@ -413,8 +458,6 @@
   </xml>
 
 
-  <!--Starter code-->
-
   <div class="tooltip">
     <a onClick="this.setSelectionRange(0, this.value.length)" id="CodeText" class="CodeVeiw">Please click "show code" to see or download your code</a>
 
@@ -423,7 +466,25 @@
 
 
   <script>
+    $(document).ready(function () {
+      setTimeout(() => {
+        Blockly.getMainWorkspace().registerButtonCallback("mum", function (button) {
+          console.log(1)
+          Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, "name");
+
+        });
+      }, 200);
+    })
+  </script>
+  <script>
+
     "use strict"
+
+    function getBlock(blockName) {
+      console.log(Blockly.Blocks[blockName].init.toString())
+      console.log(Blockly.JavaScript[blockName].toString())
+
+    }
 
     function include(file) {
 
@@ -489,16 +550,9 @@
     }
   </script>
 
-  <script>
-    var temp = "";//don't remove this
-    var temp2 = "";
-    var hasmaps = false;
-    var mapIDs = [];
-
-
+  <script src="tabs.js">
   </script>
 
-  <script src="tabs.js"></script>
 
 </body>
 

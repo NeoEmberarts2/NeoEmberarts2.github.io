@@ -1,7 +1,7 @@
 Blockly.Blocks['isNan'] = {
     init: function () {
         this.appendValueInput("Nan")
-            .setCheck(null)
+            .setCheck("Number")
             .appendField(new Blockly.FieldDropdown([["is", "!isNaN("], ["is not", "isNaN("]]), "notoris")
             .appendField("a number");
         this.setInputsInline(false);

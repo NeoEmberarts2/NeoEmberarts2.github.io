@@ -2,7 +2,7 @@ Blockly.Blocks['string'] = {
     init: function () {
         this.appendDummyInput()
             .appendField(new Blockly.FieldTextInput("String"), "String");
-        this.setOutput(true, null);
+        this.setOutput(true, "String");
         this.setColour(290);
         this.setTooltip("Input text");
         this.setHelpUrl("");
